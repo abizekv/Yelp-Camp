@@ -43,12 +43,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-
+const secret = process.env.SECRET || 'notgoodsecret'
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
-        secret: 'notgoodsecret'
+        secret: secret
     },
     touchAfter: 60 * 60 * 24,
 });
@@ -61,7 +61,7 @@ store.on('error', (err) => {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: 'notgoodsecret',
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
