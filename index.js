@@ -43,7 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-const secret = process.env.SECRET || 'notgoodsecret'
+const secret = process.env.SECRET || 'notgoodsecret';
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
@@ -155,12 +155,12 @@ app.all('*', (req, res, next) => {
 
 //custom error handler
 app.use((err, req, res, next) => {
-    const { status = 505 } = err;
+    const { status = 500 } = err;
     if (!err.message) err.message = 'Oops! Something Went Wrong';
     res.status(status).render('error.ejs', { err });
 });
 
-
-app.listen(9090, () => {
-    console.log('Listening On Port 9090! [SUCCESS]')
+const port = process.env.PORT || 9090;
+app.listen(port, () => {
+    console.log(`Listening On Port ${port} [SUCCESS]`)
 })
